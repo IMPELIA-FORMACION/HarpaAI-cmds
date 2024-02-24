@@ -1,0 +1,58 @@
+meta:
+  title: LMSTUDIO
+  category: User
+steps:
+  - type: ask
+    param: system_role
+    message: |-
+      Hola!! Soy tu asistente personal y privado!!
+      Define como quieres que actue:
+    options: null
+    default: actua como un experto en marketin y creador de contenido en redes sociales
+    optionsInvalid: false
+  - type: ask
+    param: user_req
+    message: 'Perfecto!! Ahora dime que necesitas hacer con este pagina:'
+    options: null
+    default: analiza esta web
+    optionsInvalid: false
+  - type: request
+    url: http://localhost:1234/v1/chat/completions
+    method: post
+    headers:
+      Content-Type: application/json
+    body:
+      messages:
+        - role: system
+          content: '{{system_role}}'
+        - role: user
+          content: '{{user_req}}'
+      temperature: 0.7
+      max_tokens: -1
+      stream: false
+    auth:
+      enabled: false
+      username: ''
+      password: ''
+    param: lmstudio_res
+    bodyInvalid: false
+    headersInvalid: false
+  - type: js
+    code: |-
+      // Accediendo a la clave 'content' en la respuesta
+
+      var data = args.lmstudio_res;
+
+      var content = data.body.choices[0].message.content;
+
+      return content;
+    args: lmstudio_res
+    param: clear_res
+  - type: say
+    message: |-
+      Aqui tienes tu respuesta: 
+      {{clear_res}}
+    interpolate: true
+share:
+  isPublic: false
+version: 1
