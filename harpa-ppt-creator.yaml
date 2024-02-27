@@ -1,0 +1,36 @@
+meta:
+  title: PPT-CREATOR
+  category: User
+  emoji: 🚀
+steps:
+  - type: command
+    name: YouTube extract transcripts
+    inputs: []
+  - type: ask
+    param: create_ppt
+    message: Creo una plantilla PPT?
+    options:
+      - label: ✅ YES
+        value: 'yes'
+      - label: ⛔ NO
+        value: 'no'
+    default: ''
+    optionsInvalid: false
+  - condition: '{{create_ppt}} = yes'
+    type: ask
+    param: max_d
+    message: ¿Cuantas diapositivas quieres?
+    options: null
+    default: ''
+    optionsInvalid: false
+  - condition: '{{create_ppt}} = yes'
+    type: gpt
+    prompt: >-
+      quiero crear una presentacion en funcion del contenido del video. El
+      idioma sera {{language}}. Aqui tienes las transcripciones del video:
+      {{g.transcripts}}. El numero de diapositivas sera {{max_d}} y todas seran
+      en formato titulo y luego el contenido
+    param: lmstudio_res
+share:
+  isPublic: false
+version: 1
